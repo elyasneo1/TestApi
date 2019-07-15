@@ -1,14 +1,39 @@
 const express = require('express');
 const app = express();
 const moragn = require('morgan');
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+const cors = require('cors')
+
 
 const productRoutes = require('./api/routes/products')
-const orderRoutes = require('./api/routes/order')
+const orderRoutes = require('./api/routes/orders')
+const signupRoutes = require('./api/routes/signup')
+const loginRoutes = require('./api/routes/login')
+
+mongoose.connect(process.env.MONGO_CONNECTION || 'mongodb://localhost:27017/TestApi', {
+    useNewUrlParser: true,
+    authSource: 'admin'
+}).then(() => {
+    console.log('connected to DB!');
+
+}).catch(err => {
+    console.log('Error connecting to DB:' + err.message);
+
+})
 
 app.use(moragn("dev"));
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
+
+app.use(bodyParser.json())
+app.use(cors())
 
 app.use('/products', productRoutes)
 app.use('/orders', orderRoutes)
+app.use('/signup', signupRoutes)
+app.use('/login', loginRoutes)
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');
@@ -19,7 +44,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.json({
-         errMsg : err.message  
+        errMsg: err.message
     })
 })
 
