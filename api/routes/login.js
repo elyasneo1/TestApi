@@ -17,7 +17,9 @@ router.post('/', async (req, res, next) => {
                         msg: "auth failed"
                     })
                 } else {
-                    res.status(200).json({
+                    res.status(200).cookie('token', "eybsadbiasdbiu3ibsadasdiubasd", {
+                        httpOnly: false
+                    }).json({
                         msg: "ok"
                     })
                 }
@@ -35,5 +37,7 @@ router.post('/', async (req, res, next) => {
         })
     }
 })
+
+
 
 module.exports = router

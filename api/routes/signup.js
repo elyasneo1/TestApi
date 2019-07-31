@@ -43,5 +43,5 @@ router.post('/', async (req, res, next) => {
             msg: e
         })
     }
-})
+}) 
 module.exports = router

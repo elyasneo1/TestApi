@@ -28,12 +28,17 @@ app.use(bodyParser.urlencoded({
 }))
 
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors({
+    "origin": ["http://192.168.1.110:3000", "http://127.0.0.1:8887"],
+    credentials: true,
+   // allowedHeaders:['Content-Type', 'Authorization',"Cookie"]
+}))
 
 app.use('/products', productRoutes)
 app.use('/orders', orderRoutes)
 app.use('/signup', signupRoutes)
 app.use('/login', loginRoutes)
+
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');
